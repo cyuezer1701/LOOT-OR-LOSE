@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "id": "key_bronze",
+      "nameKey": "item.key.bronze.name",
+      "descriptionKey": "item.key.bronze.desc",
+      "category": "Key",
+      "rarity": "Common",
+      "slotSize": 1,
+      "iconPath": "Sprites/Items/key_bronze",
+      "attackPower": 0,
+      "defensePower": 0,
+      "healAmount": 0,
+      "isCursed": false,
+      "isConsumable": false,
+      "synergyItemIds": ["key_silver", "key_gold"],
+      "antiSynergyItemIds": [],
+      "availableBiomes": [],
+      "dropWeight": 0.7
+    },
+    {
+      "id": "key_silver",
+      "nameKey": "item.key.silver.name",
+      "descriptionKey": "item.key.silver.desc",
+      "category": "Key",
+      "rarity": "Uncommon",
+      "slotSize": 1,
+      "iconPath": "Sprites/Items/key_silver",
+      "attackPower": 0,
+      "defensePower": 0,
+      "healAmount": 0,
+      "isCursed": false,
+      "isConsumable": false,
+      "synergyItemIds": ["key_bronze", "key_gold"],
+      "antiSynergyItemIds": [],
+      "availableBiomes": [],
+      "dropWeight": 0.4
+    },
+    {
+      "id": "key_gold",
+      "nameKey": "item.key.gold.name",
+      "descriptionKey": "item.key.gold.desc",
+      "category": "Key",
+      "rarity": "Rare",
+      "slotSize": 1,
+      "iconPath": "Sprites/Items/key_gold",
+      "attackPower": 0,
+      "defensePower": 0,
+      "healAmount": 0,
+      "isCursed": false,
+      "isConsumable": false,
+      "synergyItemIds": ["key_bronze", "key_silver"],
+      "antiSynergyItemIds": [],
+      "availableBiomes": [],
+      "dropWeight": 0.2
+    }
+  ]
+}

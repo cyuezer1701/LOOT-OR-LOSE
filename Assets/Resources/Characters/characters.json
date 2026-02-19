@@ -1,0 +1,60 @@
+{
+  "characters": [
+    {
+      "id": "char_warrior",
+      "nameKey": "character.warrior.name",
+      "descriptionKey": "character.warrior.desc",
+      "passiveAbilityKey": "character.warrior.passive",
+      "type": "Warrior",
+      "baseHP": 100,
+      "inventorySlots": 5,
+      "startingItemIds": ["weapon_rusty_sword"],
+      "isUnlocked": true,
+      "unlockConditionKey": "",
+      "iconPath": "Sprites/Characters/warrior",
+      "spritePath": "Sprites/Characters/warrior_full"
+    },
+    {
+      "id": "char_rogue",
+      "nameKey": "character.rogue.name",
+      "descriptionKey": "character.rogue.desc",
+      "passiveAbilityKey": "character.rogue.passive",
+      "type": "Rogue",
+      "baseHP": 80,
+      "inventorySlots": 6,
+      "startingItemIds": ["weapon_dagger"],
+      "isUnlocked": false,
+      "unlockConditionKey": "character.rogue.unlock",
+      "iconPath": "Sprites/Characters/rogue",
+      "spritePath": "Sprites/Characters/rogue_full"
+    },
+    {
+      "id": "char_mage",
+      "nameKey": "character.mage.name",
+      "descriptionKey": "character.mage.desc",
+      "passiveAbilityKey": "character.mage.passive",
+      "type": "Mage",
+      "baseHP": 80,
+      "inventorySlots": 5,
+      "startingItemIds": ["weapon_staff_of_light"],
+      "isUnlocked": false,
+      "unlockConditionKey": "character.mage.unlock",
+      "iconPath": "Sprites/Characters/mage",
+      "spritePath": "Sprites/Characters/mage_full"
+    },
+    {
+      "id": "char_merchant",
+      "nameKey": "character.merchant.name",
+      "descriptionKey": "character.merchant.desc",
+      "passiveAbilityKey": "character.merchant.passive",
+      "type": "Merchant",
+      "baseHP": 90,
+      "inventorySlots": 7,
+      "startingItemIds": ["key_gold"],
+      "isUnlocked": false,
+      "unlockConditionKey": "character.merchant.unlock",
+      "iconPath": "Sprites/Characters/merchant",
+      "spritePath": "Sprites/Characters/merchant_full"
+    }
+  ]
+}

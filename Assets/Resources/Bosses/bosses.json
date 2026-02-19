@@ -1,0 +1,74 @@
+{
+  "bosses": [
+    {
+      "id": "boss_skeleton_king",
+      "nameKey": "boss.skeleton_king.name",
+      "descriptionKey": "boss.skeleton_king.desc",
+      "type": "SkeletonKing",
+      "baseHP": 100,
+      "scalingPerLevel": 5,
+      "weakness": "Artifact",
+      "resistance": "Weapon",
+      "guaranteedDropIds": ["artifact_ring_of_fortune"],
+      "minRound": 15,
+      "iconPath": "Sprites/Bosses/skeleton_king",
+      "preferredBiome": "Crypt"
+    },
+    {
+      "id": "boss_fire_dragon",
+      "nameKey": "boss.fire_dragon.name",
+      "descriptionKey": "boss.fire_dragon.desc",
+      "type": "FireDragon",
+      "baseHP": 150,
+      "scalingPerLevel": 8,
+      "weakness": "Consumable",
+      "resistance": "Curse",
+      "guaranteedDropIds": ["weapon_fire_sword"],
+      "minRound": 20,
+      "iconPath": "Sprites/Bosses/fire_dragon",
+      "preferredBiome": "Volcano"
+    },
+    {
+      "id": "boss_ice_queen",
+      "nameKey": "boss.ice_queen.name",
+      "descriptionKey": "boss.ice_queen.desc",
+      "type": "IceQueen",
+      "baseHP": 120,
+      "scalingPerLevel": 6,
+      "weakness": "Weapon",
+      "resistance": "Consumable",
+      "guaranteedDropIds": ["weapon_ice_bow"],
+      "minRound": 18,
+      "iconPath": "Sprites/Bosses/ice_queen",
+      "preferredBiome": "IcePalace"
+    },
+    {
+      "id": "boss_abyss_lord",
+      "nameKey": "boss.abyss_lord.name",
+      "descriptionKey": "boss.abyss_lord.desc",
+      "type": "AbyssLord",
+      "baseHP": 200,
+      "scalingPerLevel": 10,
+      "weakness": "Defense",
+      "resistance": "Artifact",
+      "guaranteedDropIds": ["artifact_void_stone"],
+      "minRound": 25,
+      "iconPath": "Sprites/Bosses/abyss_lord",
+      "preferredBiome": "Abyss"
+    },
+    {
+      "id": "boss_shadow_reaper",
+      "nameKey": "boss.shadow_reaper.name",
+      "descriptionKey": "boss.shadow_reaper.desc",
+      "type": "ShadowReaper",
+      "baseHP": 180,
+      "scalingPerLevel": 9,
+      "weakness": "Key",
+      "resistance": "Defense",
+      "guaranteedDropIds": ["artifact_phoenix_feather"],
+      "minRound": 22,
+      "iconPath": "Sprites/Bosses/shadow_reaper",
+      "preferredBiome": "Crypt"
+    }
+  ]
+}

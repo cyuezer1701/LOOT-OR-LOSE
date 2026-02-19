@@ -1,206 +1,371 @@
-# Vite + Firebase + PWA Template
+# LOOT OR LOSE
 
-A production-ready TypeScript project template for web apps with Firebase, PWA support, i18n, Web Components, and a complete CI/CD pipeline.
+> A minimalist roguelike decision game. Find items. Make choices. Survive.
 
-## Features
+![Unity](https://img.shields.io/badge/Unity-2022.3%20LTS-000000?logo=unity&logoColor=white)
+![License](https://img.shields.io/badge/License-TBD-blue)
+![CI](https://img.shields.io/github/actions/workflow/status/cyuezer1701/LOOT-OR-LOSE/ci.yml?label=CI&logo=github)
+![iOS](https://img.shields.io/badge/Platform-iOS-lightgrey?logo=apple)
+![Android](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)
 
-- **TypeScript** — Strict mode, full type coverage
-- **Vite 7.3** — Lightning-fast dev server and optimized builds
-- **Firebase 12.9** — Firestore real-time database + Anonymous Auth
-- **PWA** — Service worker, offline fallback, installable app
-- **Tailwind CSS v4** — Local Vite plugin (no CDN), `@theme` design tokens
-- **i18n** — Lightweight translation engine with EN/DE support
-- **Web Components** — Custom Elements library with Shadow DOM
-- **CI/CD** — GitHub Actions: lint, typecheck, test, build, deploy
-- **Testing** — Vitest with jsdom, unit + integration tests, Firebase mocks
-- **Code Quality** — ESLint 9 (flat config) + Prettier + TypeScript strict
-- **Claude Code Agents** — 4 specialized agents (Designer, PM, Dev, Tester)
+---
 
-## Quick Start
+## The Game
 
-1. Click **"Use this template"** on GitHub
-2. Clone your new repository
-3. Install dependencies:
+**Loot or Lose** is a fast-paced roguelike decision game for mobile. Each round presents you with a random item — you have **3 seconds** to decide: **LOOT** it or **LEAVE** it. Your inventory holds only **5 items**. Choose wisely — wrong decisions mean death.
 
-```bash
-nvm use         # Uses Node 22 from .nvmrc
-npm install
+**Runs last 3-5 minutes.** Perfect for quick sessions on the go.
+
+---
+
+### Core Loop
+
+```
+  +------------------+
+  |  An item appears  |
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  3 seconds to    |
+  |  decide: LOOT    |
+  |  or LEAVE        |
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  Manage your     |
+  |  5-slot inventory|
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  Discover item   |
+  |  synergies &     |
+  |  avoid deadly    |
+  |  combos          |
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  Face bosses     |
+  |  every 15 rounds |
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  Survive as long |
+  |  as possible     |
+  +--------+---------+
+           |
+           v
+  +------------------+
+  |  Die. Learn.     |
+  |  Try again.      |
+  +------------------+
 ```
 
-4. Set up Firebase (see below)
-5. Start developing:
+1. An item appears
+2. You have 3 seconds to decide: **LOOT** or **LEAVE**
+3. Manage your 5-slot inventory strategically
+4. Discover item synergies and avoid deadly combos
+5. Face bosses every 15 rounds
+6. Survive as long as possible
+7. Die. Learn. Try again.
 
-```bash
-npm run dev     # Dev server at http://localhost:3000
-```
+---
 
-## Firebase Setup
+### Features
 
-1. Create a project at [Firebase Console](https://console.firebase.google.com)
-2. Enable **Anonymous Authentication** (Authentication > Sign-in method)
-3. Create a **Cloud Firestore** database
-4. Copy your Firebase config values
-5. Create a `.env` file from the template:
+| Feature | Details |
+|---------|---------|
+| Items | 50+ unique items across 7 categories |
+| Synergies | Item synergies & anti-synergies (combos can save or kill you) |
+| Bosses | 5 boss types with unique weaknesses |
+| Events | 8 random event types (merchants, altars, traps...) |
+| Characters | 4 playable characters with unique abilities |
+| Biomes | 4 themed biomes (Crypt, Volcano, Ice Palace, Abyss) |
+| Daily Runs | Global leaderboards with daily seeds |
+| Achievements | 20+ achievements to unlock |
+| Permadeath | Every run starts fresh — no shortcuts |
 
-```bash
-cp .env.example .env
-```
+---
 
-6. Fill in your Firebase credentials in `.env`
-7. Update `.firebaserc` with your project ID
-8. Update `deploy.yml` with your project ID and service account secret name
+## Screenshots
 
-## Environment Variables
+_Coming soon_
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_FIREBASE_API_KEY` | Firebase API key |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth domain |
-| `VITE_FIREBASE_PROJECT_ID` | Firebase project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID |
-| `VITE_FIREBASE_APP_ID` | Firebase app ID |
-| `VITE_FIREBASE_MEASUREMENT_ID` | Firebase measurement ID |
+---
 
-## Scripts
+## Tech Stack
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start dev server (port 3000) |
-| `npm run build` | Typecheck + production build to `dist/` |
-| `npm run preview` | Preview production build |
-| `npm run typecheck` | Run TypeScript type checking |
-| `npm test` | Run tests in watch mode |
-| `npm run test:ui` | Run tests with visual UI |
-| `npm run test:coverage` | Run tests with coverage report |
-| `npm run lint` | Check code quality |
-| `npm run lint:fix` | Auto-fix lint issues |
-| `npm run format` | Format code |
-| `npm run format:check` | Check formatting |
+| Component | Technology |
+|-----------|-----------|
+| **Engine** | Unity 2022.3 LTS (C#) |
+| **Backend** | Firebase (Auth, Firestore, Analytics, Cloud Functions) |
+| **Auth** | Firebase Anonymous Auth + optional upgrade |
+| **Database** | Cloud Firestore (leaderboards, cloud save) |
+| **Analytics** | Firebase Analytics + Custom Events |
+| **A/B Testing** | Firebase Remote Config |
+| **CI/CD** | GitHub Actions + GameCI |
+| **Platforms** | iOS + Android |
+
+---
 
 ## Project Structure
 
 ```
-src/
-├── main.ts                      # Entry point & orchestrator
-├── vite-env.d.ts                # Vite environment type declarations
-├── types/
-│   └── index.ts                 # Shared TypeScript interfaces
-├── config/
-│   └── firebase.ts              # Firebase initialization
-├── constants/
-│   └── app-constants.ts         # Application constants
-├── core/
-│   ├── item-logic.ts            # Pure business logic (no side effects)
-│   └── utils.ts                 # Utility functions
-├── services/
-│   ├── connection-monitor.ts    # Online/offline detection
-│   └── item-service.ts          # Firestore CRUD + real-time
-├── state/
-│   └── app-state.ts             # Singleton state object
-├── ui/
-│   ├── event-handlers.ts        # DOM event wiring
-│   ├── renderer.ts              # DOM rendering functions
-│   └── ui-manager.ts            # Screen/modal management
-├── components/
-│   ├── base-component.ts        # Abstract Web Component base class
-│   ├── app-button.ts            # <app-button> component
-│   ├── app-card.ts              # <app-card> component
-│   ├── app-modal.ts             # <app-modal> component
-│   ├── app-notification.ts      # <app-notification> component
-│   ├── app-input.ts             # <app-input> component
-│   ├── app-empty-state.ts       # <app-empty-state> component
-│   └── index.ts                 # Component registration
-├── i18n/
-│   ├── i18n.ts                  # Translation engine (t(), initI18n)
-│   ├── locale-switcher.ts       # Locale switching utilities
-│   └── locales/
-│       ├── en.json              # English translations
-│       └── de.json              # German translations
-└── styles/
-    ├── main.css                 # Tailwind import + design tokens
-    ├── components.css           # Component-specific styles
-    ├── ui.css                   # Shared UI components
-    └── animations.css           # Keyframe animations
+LOOT-OR-LOSE/
+|
++-- Assets/
+|   +-- Scripts/
+|   |   +-- Core/               Pure game logic (no Unity deps, fully testable)
+|   |   +-- Data/               Serializable data models (items, bosses, events)
+|   |   +-- Enums/              Game enumerations (GameState, ItemCategory, etc.)
+|   |   +-- Interfaces/         Contracts and abstractions
+|   |   +-- Managers/           Unity MonoBehaviour managers (singletons)
+|   |   +-- Services/           Firebase, Analytics, IAP, Audio services
+|   |   +-- State/              Runtime & persistent game state
+|   |   +-- UI/                 UI components, screens, and HUD elements
+|   |   +-- Utils/              Helper classes and extensions
+|   |   +-- Config/             Configuration and settings
+|   |
+|   +-- Resources/              JSON data (items, bosses, events, characters, biomes)
+|   +-- Art/                    Sprites, fonts, materials, shaders
+|   +-- Audio/                  Music and SFX
+|   +-- Scenes/                 Unity scenes (Main, Loading, etc.)
+|   +-- Prefabs/                Reusable prefabs (UI, items, effects)
+|   +-- Tests/
+|       +-- EditMode/           Pure logic tests (Core/)
+|       +-- PlayMode/           Integration tests with Unity lifecycle
+|
++-- docs/                       Game design document and other docs
++-- .github/
+|   +-- workflows/              CI/CD pipelines (build, test, deploy)
+|
++-- Packages/                   Unity package manifest
++-- ProjectSettings/            Unity project settings
 ```
+
+---
 
 ## Architecture
 
-### Folder Responsibilities
+Loot or Lose follows a **clean architecture** approach adapted for Unity:
 
-| Folder | Purpose | Example |
-|--------|---------|---------|
-| `config/` | External service configuration | Firebase init |
-| `constants/` | Application-wide constants | Collection names, limits |
-| `core/` | Pure business logic (no side effects) | Validation, sorting |
-| `services/` | External service integrations | Firestore CRUD, connection monitor |
-| `state/` | Application state management | Singleton state object |
-| `ui/` | DOM manipulation and rendering | Screen management, event handlers |
-| `components/` | Reusable Web Components | Buttons, cards, modals, inputs |
-| `i18n/` | Internationalization | Translation engine, locale files |
-| `styles/` | CSS files | Tailwind tokens, components, animations |
-| `types/` | TypeScript type definitions | Item, AppState, ValidationResult |
+### Pure Logic Separation
 
-### Design Patterns
+`Assets/Scripts/Core/` contains **zero Unity dependencies**. No `MonoBehaviour`, no `UnityEngine` (except basic value types like `Vector2` if needed). This layer is fully testable with NUnit in EditMode tests — no Play mode required.
 
-- **Singleton State** — Single shared state object imported by all modules
-- **Render Bridge** — `main.ts` provides a `renderApp()` function to modules
-- **Module Init Pattern** — Each module exports an `init*()` function
-- **Pure Logic Separation** — Business logic in `core/` has no dependencies on DOM or Firebase
-- **Web Components** — Custom Elements with Shadow DOM for encapsulated, reusable UI
+```
+Core/
+  +-- ItemGenerator.cs          Item spawning logic & probability
+  +-- InventoryLogic.cs         Inventory management (5-slot limit)
+  +-- SynergyResolver.cs        Item combo detection & effects
+  +-- BossCombatLogic.cs        Boss fight resolution
+  +-- ScoringLogic.cs           Score calculation & multipliers
+  +-- EventResolver.cs          Random event logic
+  +-- RunManager.cs             Overall run progression
+```
 
-### Web Components
+### Manager Pattern
 
-The template includes a component library built on native Custom Elements:
+Singleton managers in `Assets/Scripts/Managers/` coordinate Unity-specific systems. They use `DontDestroyOnLoad` and are initialized in a boot scene.
 
-| Component | Tag | Description |
-|-----------|-----|-------------|
-| `AppButton` | `<app-button>` | Button with variant (primary/success/danger/ghost) and size (sm/md/lg) |
-| `AppCard` | `<app-card>` | Card with header/body/footer slots and elevation levels |
-| `AppModal` | `<app-modal>` | Modal dialog with show()/hide() API |
-| `AppNotification` | `<app-notification>` | Toast notifications via static `AppNotification.show()` |
-| `AppInput` | `<app-input>` | Form input with label, validation, and change events |
-| `AppEmptyState` | `<app-empty-state>` | Empty state placeholder with icon and message |
+### Observer Pattern
 
-### i18n
+`UnityEvent` and custom events provide decoupled communication between systems. Managers subscribe to events rather than directly referencing each other.
 
-The template includes a lightweight translation engine:
+### State Machine
 
-- `t('key.path')` — Translate a key with dot notation
-- `t('key', { param: value })` — Interpolate parameters
-- `translateDOM()` — Translate all elements with `data-i18n` attributes
-- Locale files in `src/i18n/locales/` (EN + DE included)
-- Browser language auto-detection with localStorage persistence
+`GameState` enum in `Enums/GameEnums.cs` drives all screen transitions and game flow:
 
-## Claude Code Agents
+```
+Loading -> MainMenu -> RunActive -> BossFight -> GameOver -> MainMenu
+                          |                         ^
+                          +--- Event ----------------+
+```
 
-This template includes four specialized Claude Code agents as slash commands:
+### Data-Driven Design
 
-| Command | Role | Focus |
-|---------|------|-------|
-| `/designer` | UI/UX Designer | Tailwind v4, accessibility (WCAG 2.1 AA), responsive design, design tokens |
-| `/pm` | Project Manager | Feature planning, task decomposition, dependency analysis |
-| `/dev` | Developer | TypeScript implementation, architecture patterns, Firebase, testing |
-| `/tester` | Tester/QA | Vitest tests, coverage analysis, edge cases, Firebase mocking |
+All game content is defined in JSON files under `Assets/Resources/` and loaded at runtime. Adding new items, bosses, or events requires **zero code changes** — just edit JSON.
 
-Project context is provided via `CLAUDE.md` at the project root.
+---
 
-## GitHub Secrets
+## Getting Started
 
-For CI/CD to work, add these secrets in your repository settings:
+### Prerequisites
 
-- All `VITE_FIREBASE_*` variables (same as `.env`)
-- `FIREBASE_SERVICE_ACCOUNT` — Firebase service account JSON (for deployment)
+| Requirement | Version |
+|-------------|---------|
+| Unity | 2022.3 LTS or newer |
+| Firebase SDK | Firebase Unity SDK |
+| Git LFS | Required for binary assets |
+| Platform SDKs | Xcode (iOS) / Android SDK |
+
+### Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/cyuezer1701/LOOT-OR-LOSE.git
+cd LOOT-OR-LOSE
+
+# 2. Initialize Git LFS
+git lfs install
+git lfs pull
+
+# 3. Open in Unity Hub
+#    -> Add project from disk
+#    -> Select the LOOT-OR-LOSE folder
+
+# 4. Configure Firebase
+cp firebase-config.example.json firebase-config.json
+# Edit firebase-config.json with your credentials
+
+# 5. Open the main scene
+#    Assets/Scenes/MainScene.unity
+
+# 6. Press Play!
+```
+
+### Firebase Setup
+
+1. Create a new project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable **Anonymous Authentication** under Authentication > Sign-in method
+3. Create a **Firestore Database** (start in test mode for development)
+4. Add your apps:
+   - **Android**: Download `google-services.json`
+   - **iOS**: Download `GoogleService-Info.plist`
+5. Place both files in `Assets/StreamingAssets/`
+6. Install the Firebase Unity SDK via the Unity Package Manager
+
+---
+
+## Testing
+
+| Test Type | Location | What It Tests | How to Run |
+|-----------|----------|---------------|------------|
+| **EditMode** | `Assets/Tests/EditMode/` | Pure logic (Core/) | Test Runner > EditMode |
+| **PlayMode** | `Assets/Tests/PlayMode/` | Unity lifecycle integration | Test Runner > PlayMode |
+| **CI** | `.github/workflows/` | Automated on every push | Automatic via GitHub Actions |
+
+### Running Tests Locally
+
+1. Open Unity
+2. Go to **Window > General > Test Runner**
+3. Select **EditMode** or **PlayMode** tab
+4. Click **Run All**
+
+### Test Naming Convention
+
+```
+Source:  Assets/Scripts/Core/ItemGenerator.cs
+Test:    Assets/Tests/EditMode/ItemGeneratorTests.cs
+```
+
+---
 
 ## CI/CD Pipeline
 
 ```
-Push/PR to main
-    └─> CI: Install → Format Check → Lint → Typecheck → Test → Coverage → Build
-              └─> CD (on main): Build → Deploy to Firebase Hosting
-              └─> PR: Build → Deploy to Firebase Preview Channel
++------------------+     +------------------+     +------------------+
+|   Pull Request   | --> |   Validation +   | --> |   Merge Ready    |
+|                  |     |   All Tests      |     |                  |
++------------------+     +------------------+     +------------------+
+
++------------------+     +------------------+     +------------------+
+|   Push to main   | --> |   Tests +        | --> |   Android Build  |
+|   or develop     |     |   Build          |     |   + iOS Build    |
++------------------+     +------------------+     +------------------+
+
++------------------+     +------------------+
+|   Manual Deploy  | --> |   Play Store /   |
+|   (release tag)  |     |   App Store      |
++------------------+     +------------------+
 ```
+
+| Trigger | Actions |
+|---------|---------|
+| **Pull Request** | Validation + EditMode & PlayMode tests |
+| **Push to main/develop** | Tests + Android build + iOS build |
+| **Release tag** | Tests + builds + Play Store / App Store submission |
+
+---
+
+## Game Design
+
+The full Game Design Document covers every system in detail:
+
+**[docs/GAME_DESIGN_DOCUMENT.md](docs/GAME_DESIGN_DOCUMENT.md)**
+
+Includes: item tables, boss specifications, event definitions, synergy matrices, scoring formulas, biome configurations, character abilities, and balancing parameters.
+
+---
+
+## Roadmap
+
+### MVP (v1.0)
+
+- [x] Project setup & architecture
+- [x] Item system (50+ items, 7 categories)
+- [x] Core game loop (item generation, timer, decisions)
+- [ ] Boss combat system
+- [ ] Event system
+- [ ] Scoring & leaderboards
+- [ ] Character & biome unlocks
+- [ ] Daily runs
+- [ ] UI/UX polish & animations
+- [ ] Sound & haptics
+- [ ] Monetization (IAP + rewarded ads)
+- [ ] Localization (DE + EN)
+- [ ] App Store submission
+
+### Post-Launch (v1.x)
+
+- [ ] New biomes & bosses
+- [ ] Season pass system
+- [ ] Social features (friends, sharing runs)
+- [ ] Ghost mode (replay other players' runs)
+- [ ] Additional languages (FR, ES, JA)
+- [ ] Tablet-optimized UI
+- [ ] Accessibility improvements
+
+---
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow the architecture patterns (pure logic in `Core/`, managers in `Managers/`)
+4. Write tests for new logic (EditMode tests for `Core/`)
+5. Ensure all tests pass
+6. Commit your changes (`git commit -m 'Add amazing feature'`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+### Code Style
+
+- Follow C# naming conventions (PascalCase for public, _camelCase for private fields)
+- Keep `Core/` free of Unity dependencies
+- All user-facing strings go through `LocalizationManager.t()`
+- New game content goes in JSON files, not in code
+
+---
 
 ## License
 
-MIT
+**TBD** — License to be determined before public release.
+
+---
+
+## Contact
+
+**Project by cyuezer1701**
+
+---
+
+<p align="center">
+  <i>Die. Learn. Loot again.</i>
+</p>

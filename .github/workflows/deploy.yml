@@ -1,42 +1,210 @@
 name: Deploy
 
+# Manual deployment trigger with environment selection
+#
+# SETUP INSTRUCTIONS:
+# 1. Unity License: Add UNITY_LICENSE, UNITY_EMAIL, UNITY_PASSWORD secrets
+#    - Activate a Unity license locally, then base64-encode the .ulf file
+#    - See: https://game.ci/docs/github/activation
+#
+# 2. Android (Google Play):
+#    - Create a Google Play Service Account with appropriate permissions
+#    - Add GOOGLE_PLAY_SERVICE_ACCOUNT_JSON secret (the full JSON key file content)
+#    - Add ANDROID_KEYSTORE_BASE64 (base64-encoded .keystore file)
+#    - Add ANDROID_KEYSTORE_PASS, ANDROID_KEYALIAS_NAME, ANDROID_KEYALIAS_PASS
+#    - Ensure you have uploaded at least one APK/AAB manually first
+#
+# 3. iOS (App Store):
+#    - iOS deployment requires macOS with Xcode and fastlane
+#    - Add APP_STORE_CONNECT_API_KEY_ID, APP_STORE_CONNECT_ISSUER_ID
+#    - Add APP_STORE_CONNECT_API_KEY_BASE64 (base64-encoded .p8 key)
+#    - Add IOS_CERTIFICATE_BASE64, IOS_CERTIFICATE_PASSWORD
+#    - Add IOS_PROVISIONING_PROFILE_BASE64
+#    - Consider using fastlane match for code signing management
+
 on:
-  workflow_run:
-    workflows: ['CI']
-    types: [completed]
-    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      platform:
+        description: 'Target platform'
+        required: true
+        type: choice
+        options:
+          - android
+          - ios
+          - both
 
 jobs:
-  deploy:
+  deploy-android:
+    name: Deploy to Google Play
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
-
+    if: inputs.platform == 'android' || inputs.platform == 'both'
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          lfs: true
 
-      - name: Install dependencies
-        run: npm ci
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-
+            Library-
 
-      - name: Build
-        run: npm run build
+      # Build Android AAB
+      - uses: game-ci/unity-builder@v4
         env:
-          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
-          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
-
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          channelId: live
-          projectId: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          projectPath: .
+          targetPlatform: Android
+          buildName: LootOrLose
+          buildsPath: builds
+          androidAppBundle: true
+          androidKeystoreName: user.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+
+      # Upload to Google Play
+      # Staging -> internal track, Production -> production track
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.lootorlose.game
+          releaseFiles: builds/Android/*.aab
+          track: ${{ inputs.environment == 'production' && 'production' || 'internal' }}
+          status: ${{ inputs.environment == 'production' && 'completed' || 'draft' }}
+          # inAppUpdatePriority: 2
+
+      - name: Deployment Summary
+        run: |
+          echo "## Android Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Track:** ${{ inputs.environment == 'production' && 'production' || 'internal' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ inputs.environment == 'production' && 'completed' || 'draft' }}" >> $GITHUB_STEP_SUMMARY
+
+  deploy-ios:
+    name: Deploy to App Store
+    runs-on: macos-latest
+    if: inputs.platform == 'ios' || inputs.platform == 'both'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-iOS-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-iOS-
+            Library-
+
+      # Build iOS Xcode project
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: .
+          targetPlatform: iOS
+          buildName: LootOrLose
+          buildsPath: builds
+
+      # Install and configure fastlane for App Store upload
+      - name: Install fastlane
+        run: |
+          gem install fastlane
+
+      # Import code signing certificate
+      - name: Import Code Signing Certificate
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          # Create a temporary keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # Import certificate
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          echo -n "$IOS_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          security import $CERTIFICATE_PATH -P "$IOS_CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+      # Install provisioning profile
+      - name: Install Provisioning Profile
+        env:
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          echo -n "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      # Build and archive with xcodebuild
+      - name: Build Xcode Project
+        run: |
+          cd builds/iOS/LootOrLose
+          xcodebuild -project Unity-iPhone.xcodeproj \
+            -scheme Unity-iPhone \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/LootOrLose.xcarchive \
+            archive
+
+      # Export IPA
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath $RUNNER_TEMP/LootOrLose.xcarchive \
+            -exportOptionsPlist builds/iOS/ExportOptions.plist \
+            -exportPath $RUNNER_TEMP/export
+
+      # Upload to App Store Connect
+      # For staging: upload to TestFlight
+      # For production: upload for App Store review
+      - name: Upload to App Store Connect
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+        run: |
+          # Decode API key
+          mkdir -p ~/private_keys
+          echo -n "$APP_STORE_CONNECT_API_KEY_BASE64" | base64 --decode \
+            > ~/private_keys/AuthKey_${APP_STORE_CONNECT_API_KEY_ID}.p8
+
+          xcrun altool --upload-app \
+            --type ios \
+            --file "$RUNNER_TEMP/export/LootOrLose.ipa" \
+            --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
+
+      - name: Deployment Summary
+        run: |
+          echo "## iOS Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Destination:** ${{ inputs.environment == 'production' && 'App Store Review' || 'TestFlight' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> **Note:** For production releases, you still need to submit the build" >> $GITHUB_STEP_SUMMARY
+          echo "> for review in App Store Connect." >> $GITHUB_STEP_SUMMARY

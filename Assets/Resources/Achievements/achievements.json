@@ -1,0 +1,172 @@
+{
+  "achievements": [
+    {
+      "id": "first_run",
+      "titleKey": "achievement.first_run.title",
+      "descriptionKey": "achievement.first_run.desc",
+      "condition": "total_runs >= 1",
+      "iconPath": "Sprites/Achievements/first_run"
+    },
+    {
+      "id": "survivor_10",
+      "titleKey": "achievement.survivor_10.title",
+      "descriptionKey": "achievement.survivor_10.desc",
+      "condition": "best_round >= 10",
+      "iconPath": "Sprites/Achievements/survivor_10"
+    },
+    {
+      "id": "survivor_25",
+      "titleKey": "achievement.survivor_25.title",
+      "descriptionKey": "achievement.survivor_25.desc",
+      "condition": "best_round >= 25",
+      "iconPath": "Sprites/Achievements/survivor_25"
+    },
+    {
+      "id": "survivor_50",
+      "titleKey": "achievement.survivor_50.title",
+      "descriptionKey": "achievement.survivor_50.desc",
+      "condition": "best_round >= 50",
+      "iconPath": "Sprites/Achievements/survivor_50"
+    },
+    {
+      "id": "first_boss_kill",
+      "titleKey": "achievement.first_boss_kill.title",
+      "descriptionKey": "achievement.first_boss_kill.desc",
+      "condition": "total_bosses_defeated >= 1",
+      "iconPath": "Sprites/Achievements/first_boss_kill"
+    },
+    {
+      "id": "dragon_slayer",
+      "titleKey": "achievement.dragon_slayer.title",
+      "descriptionKey": "achievement.dragon_slayer.desc",
+      "condition": "boss_FireDragon_defeated >= 1",
+      "iconPath": "Sprites/Achievements/dragon_slayer"
+    },
+    {
+      "id": "queen_slayer",
+      "titleKey": "achievement.queen_slayer.title",
+      "descriptionKey": "achievement.queen_slayer.desc",
+      "condition": "boss_IceQueen_defeated >= 1",
+      "iconPath": "Sprites/Achievements/queen_slayer"
+    },
+    {
+      "id": "all_bosses",
+      "titleKey": "achievement.all_bosses.title",
+      "descriptionKey": "achievement.all_bosses.desc",
+      "condition": "boss_SkeletonKing_defeated >= 1 && boss_FireDragon_defeated >= 1 && boss_IceQueen_defeated >= 1 && boss_AbyssLord_defeated >= 1 && boss_ShadowReaper_defeated >= 1",
+      "iconPath": "Sprites/Achievements/all_bosses"
+    },
+    {
+      "id": "hoarder",
+      "titleKey": "achievement.hoarder.title",
+      "descriptionKey": "achievement.hoarder.desc",
+      "condition": "total_items_looted >= 100",
+      "iconPath": "Sprites/Achievements/hoarder"
+    },
+    {
+      "id": "cursed_collector",
+      "titleKey": "achievement.cursed_collector.title",
+      "descriptionKey": "achievement.cursed_collector.desc",
+      "condition": "curses_survived >= 3",
+      "iconPath": "Sprites/Achievements/cursed_collector"
+    },
+    {
+      "id": "pacifist",
+      "titleKey": "achievement.pacifist.title",
+      "descriptionKey": "achievement.pacifist.desc",
+      "condition": "run_completed_no_weapons == true",
+      "iconPath": "Sprites/Achievements/pacifist"
+    },
+    {
+      "id": "full_armor",
+      "titleKey": "achievement.full_armor.title",
+      "descriptionKey": "achievement.full_armor.desc",
+      "condition": "synergy_ArmorSet_triggered >= 1",
+      "iconPath": "Sprites/Achievements/full_armor"
+    },
+    {
+      "id": "dual_wielder",
+      "titleKey": "achievement.dual_wielder.title",
+      "descriptionKey": "achievement.dual_wielder.desc",
+      "condition": "synergy_DualWield_triggered >= 1",
+      "iconPath": "Sprites/Achievements/dual_wielder"
+    },
+    {
+      "id": "daily_runner",
+      "titleKey": "achievement.daily_runner.title",
+      "descriptionKey": "achievement.daily_runner.desc",
+      "condition": "daily_runs_completed >= 7",
+      "iconPath": "Sprites/Achievements/daily_runner"
+    },
+    {
+      "id": "streak_master",
+      "titleKey": "achievement.streak_master.title",
+      "descriptionKey": "achievement.streak_master.desc",
+      "condition": "best_streak >= 10",
+      "iconPath": "Sprites/Achievements/streak_master"
+    },
+    {
+      "id": "high_roller",
+      "titleKey": "achievement.high_roller.title",
+      "descriptionKey": "achievement.high_roller.desc",
+      "condition": "best_score >= 10000",
+      "iconPath": "Sprites/Achievements/high_roller"
+    },
+    {
+      "id": "legend",
+      "titleKey": "achievement.legend.title",
+      "descriptionKey": "achievement.legend.desc",
+      "condition": "best_score >= 25000",
+      "iconPath": "Sprites/Achievements/legend"
+    },
+    {
+      "id": "biome_explorer",
+      "titleKey": "achievement.biome_explorer.title",
+      "descriptionKey": "achievement.biome_explorer.desc",
+      "condition": "biome_Crypt_played >= 1 && biome_Volcano_played >= 1 && biome_IcePalace_played >= 1 && biome_Abyss_played >= 1",
+      "iconPath": "Sprites/Achievements/biome_explorer"
+    },
+    {
+      "id": "speedrunner",
+      "titleKey": "achievement.speedrunner.title",
+      "descriptionKey": "achievement.speedrunner.desc",
+      "condition": "run_completed_under_120_seconds == true",
+      "iconPath": "Sprites/Achievements/speedrunner"
+    },
+    {
+      "id": "no_damage_boss",
+      "titleKey": "achievement.no_damage_boss.title",
+      "descriptionKey": "achievement.no_damage_boss.desc",
+      "condition": "boss_defeated_no_damage_taken >= 1",
+      "iconPath": "Sprites/Achievements/no_damage_boss"
+    },
+    {
+      "id": "skeleton_slayer",
+      "titleKey": "achievement.skeleton_slayer.title",
+      "descriptionKey": "achievement.skeleton_slayer.desc",
+      "condition": "boss_SkeletonKing_defeated >= 1",
+      "iconPath": "Sprites/Achievements/skeleton_slayer"
+    },
+    {
+      "id": "abyss_conqueror",
+      "titleKey": "achievement.abyss_conqueror.title",
+      "descriptionKey": "achievement.abyss_conqueror.desc",
+      "condition": "boss_AbyssLord_defeated >= 1",
+      "iconPath": "Sprites/Achievements/abyss_conqueror"
+    },
+    {
+      "id": "shadow_banisher",
+      "titleKey": "achievement.shadow_banisher.title",
+      "descriptionKey": "achievement.shadow_banisher.desc",
+      "condition": "boss_ShadowReaper_defeated >= 1",
+      "iconPath": "Sprites/Achievements/shadow_banisher"
+    },
+    {
+      "id": "potion_master",
+      "titleKey": "achievement.potion_master.title",
+      "descriptionKey": "achievement.potion_master.desc",
+      "condition": "synergy_PotionMaster_triggered >= 1",
+      "iconPath": "Sprites/Achievements/potion_master"
+    }
+  ]
+}
