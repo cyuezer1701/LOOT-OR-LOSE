@@ -1,0 +1,100 @@
+{
+  "events": [
+    {
+      "id": "event_merchant",
+      "titleKey": "event.merchant.title",
+      "descriptionKey": "event.merchant.desc",
+      "type": "Merchant",
+      "requiresItem": false,
+      "requiredItemCategory": "",
+      "probability": 0.15,
+      "minRound": 3,
+      "availableZones": ["Crypt", "Volcano", "IcePalace", "Abyss"],
+      "iconPath": "Sprites/Events/event_merchant"
+    },
+    {
+      "id": "event_altar",
+      "titleKey": "event.altar.title",
+      "descriptionKey": "event.altar.desc",
+      "type": "Altar",
+      "requiresItem": true,
+      "requiredItemCategory": "Consumable",
+      "probability": 0.10,
+      "minRound": 5,
+      "availableZones": ["Crypt", "Abyss"],
+      "iconPath": "Sprites/Events/event_altar"
+    },
+    {
+      "id": "event_chest",
+      "titleKey": "event.chest.title",
+      "descriptionKey": "event.chest.desc",
+      "type": "Chest",
+      "requiresItem": true,
+      "requiredItemCategory": "Key",
+      "probability": 0.12,
+      "minRound": 1,
+      "availableZones": ["Crypt", "Volcano", "IcePalace", "Abyss"],
+      "iconPath": "Sprites/Events/event_chest"
+    },
+    {
+      "id": "event_curse",
+      "titleKey": "event.curse.title",
+      "descriptionKey": "event.curse.desc",
+      "type": "Curse",
+      "requiresItem": false,
+      "requiredItemCategory": "",
+      "probability": 0.10,
+      "minRound": 5,
+      "availableZones": ["Crypt", "Abyss"],
+      "iconPath": "Sprites/Events/event_curse"
+    },
+    {
+      "id": "event_wheel_of_fortune",
+      "titleKey": "event.wheel_of_fortune.title",
+      "descriptionKey": "event.wheel_of_fortune.desc",
+      "type": "WheelOfFortune",
+      "requiresItem": false,
+      "requiredItemCategory": "",
+      "probability": 0.08,
+      "minRound": 8,
+      "availableZones": ["Crypt", "Volcano", "IcePalace"],
+      "iconPath": "Sprites/Events/event_wheel_of_fortune"
+    },
+    {
+      "id": "event_trap",
+      "titleKey": "event.trap.title",
+      "descriptionKey": "event.trap.desc",
+      "type": "Trap",
+      "requiresItem": false,
+      "requiredItemCategory": "",
+      "probability": 0.15,
+      "minRound": 1,
+      "availableZones": ["Crypt", "Volcano", "IcePalace", "Abyss"],
+      "iconPath": "Sprites/Events/event_trap"
+    },
+    {
+      "id": "event_healer",
+      "titleKey": "event.healer.title",
+      "descriptionKey": "event.healer.desc",
+      "type": "Healer",
+      "requiresItem": true,
+      "requiredItemCategory": "Consumable",
+      "probability": 0.10,
+      "minRound": 3,
+      "availableZones": ["Crypt", "IcePalace"],
+      "iconPath": "Sprites/Events/event_healer"
+    },
+    {
+      "id": "event_blacksmith",
+      "titleKey": "event.blacksmith.title",
+      "descriptionKey": "event.blacksmith.desc",
+      "type": "Blacksmith",
+      "requiresItem": true,
+      "requiredItemCategory": "Weapon",
+      "probability": 0.10,
+      "minRound": 5,
+      "availableZones": ["Crypt", "Volcano"],
+      "iconPath": "Sprites/Events/event_blacksmith"
+    }
+  ]
+}

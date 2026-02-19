@@ -1,0 +1,60 @@
+{
+  "biomes": [
+    {
+      "id": "biome_crypt",
+      "nameKey": "biome.crypt.name",
+      "descriptionKey": "biome.crypt.desc",
+      "type": "Crypt",
+      "primaryColor": "#1a1a2e",
+      "secondaryColor": "#2d2d44",
+      "isUnlocked": true,
+      "unlockConditionKey": "",
+      "minRound": 1,
+      "backgroundPath": "Sprites/Biomes/crypt_bg",
+      "iconPath": "Sprites/Biomes/crypt_icon",
+      "ambientTrack": "Audio/Ambience/crypt_ambience"
+    },
+    {
+      "id": "biome_volcano",
+      "nameKey": "biome.volcano.name",
+      "descriptionKey": "biome.volcano.desc",
+      "type": "Volcano",
+      "primaryColor": "#2e1a1a",
+      "secondaryColor": "#44302d",
+      "isUnlocked": false,
+      "unlockConditionKey": "biome.volcano.unlock",
+      "minRound": 10,
+      "backgroundPath": "Sprites/Biomes/volcano_bg",
+      "iconPath": "Sprites/Biomes/volcano_icon",
+      "ambientTrack": "Audio/Ambience/volcano_ambience"
+    },
+    {
+      "id": "biome_ice_palace",
+      "nameKey": "biome.ice_palace.name",
+      "descriptionKey": "biome.ice_palace.desc",
+      "type": "IcePalace",
+      "primaryColor": "#1a2e2e",
+      "secondaryColor": "#2d3d44",
+      "isUnlocked": false,
+      "unlockConditionKey": "biome.ice_palace.unlock",
+      "minRound": 15,
+      "backgroundPath": "Sprites/Biomes/ice_palace_bg",
+      "iconPath": "Sprites/Biomes/ice_palace_icon",
+      "ambientTrack": "Audio/Ambience/ice_palace_ambience"
+    },
+    {
+      "id": "biome_abyss",
+      "nameKey": "biome.abyss.name",
+      "descriptionKey": "biome.abyss.desc",
+      "type": "Abyss",
+      "primaryColor": "#0d0d1a",
+      "secondaryColor": "#1a1a2e",
+      "isUnlocked": false,
+      "unlockConditionKey": "biome.abyss.unlock",
+      "minRound": 20,
+      "backgroundPath": "Sprites/Biomes/abyss_bg",
+      "iconPath": "Sprites/Biomes/abyss_icon",
+      "ambientTrack": "Audio/Ambience/abyss_ambience"
+    }
+  ]
+}
