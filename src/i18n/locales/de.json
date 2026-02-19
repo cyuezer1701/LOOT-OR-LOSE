@@ -1,0 +1,59 @@
+{
+  "app": {
+    "name": "Meine App",
+    "tagline": "Erstellt mit Vite + Firebase",
+    "description": "Ein produktionsreifes Template zum Erstellen von Webanwendungen mit Echtzeit-Firebase-Backend, PWA-Support und einer vollstaendigen CI/CD-Pipeline."
+  },
+  "actions": {
+    "getStarted": "Los geht's",
+    "addItem": "+ Hinzufuegen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Loeschen",
+    "back": "Zurueck",
+    "tryAgain": "Erneut versuchen",
+    "install": "Installieren"
+  },
+  "items": {
+    "title": "Meine Eintraege",
+    "subtitle": "Deine Eintraege",
+    "emptyState": "Noch keine Eintraege. Erstelle deinen ersten Eintrag!",
+    "newItem": "Neuer Eintrag",
+    "titleLabel": "Titel",
+    "titlePlaceholder": "Titel eingeben...",
+    "descriptionLabel": "Beschreibung",
+    "descriptionPlaceholder": "Beschreibung eingeben...",
+    "created": "Eintrag erstellt!",
+    "deleted": "Eintrag geloescht",
+    "createFailed": "Eintrag konnte nicht erstellt werden",
+    "deleteFailed": "Eintrag konnte nicht geloescht werden",
+    "deleteConfirm": "Diesen Eintrag loeschen?"
+  },
+  "connection": {
+    "lost": "Verbindung verloren...",
+    "restored": "Verbunden!"
+  },
+  "pwa": {
+    "installTitle": "App installieren",
+    "installDescription": "Zum Startbildschirm hinzufuegen fuer die beste Erfahrung"
+  },
+  "offline": {
+    "title": "Du bist offline",
+    "description": "Diese App benoetigt eine Internetverbindung."
+  },
+  "validation": {
+    "invalidObject": "Ungueltiges Objekt",
+    "titleRequired": "Titel ist erforderlich",
+    "titleTooLong": "Titel darf maximal {max} Zeichen haben",
+    "descriptionTooLong": "Beschreibung darf maximal {max} Zeichen haben"
+  },
+  "firebase": {
+    "connecting": "Verbinde mit Firebase...",
+    "connected": "Firebase verbunden! Benutzer-ID:",
+    "connectionError": "Firebase Verbindungsfehler:",
+    "configMissing": "Firebase-Konfiguration fehlt! Pruefe deine .env Datei."
+  },
+  "common": {
+    "loading": "Laden..."
+  }
+}
