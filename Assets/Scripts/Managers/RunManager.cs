@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LootOrLose.Core.Combat;
+using LootOrLose.Core.Events;
 using LootOrLose.Core.Items;
 using LootOrLose.Data;
 using LootOrLose.Enums;
@@ -520,8 +521,87 @@ namespace LootOrLose.Managers
             GameManager.Instance.OnEventTriggered?.Invoke(eventData);
             Debug.Log($"[RunManager] Event triggered: {eventData.titleKey} ({eventData.type})");
 
-            // Event resolution is handled by the UI / event system.
-            // The UI calls ResumeAfterEvent() when the event is resolved.
+            // Resolve the event using pure logic
+            List<ItemData> itemPool = DataManager.Instance != null
+                ? DataManager.Instance.AllItems : null;
+            EventOutcome outcome = EventProcessor.ProcessEvent(eventData, currentRun, rng, itemPool);
+
+            ApplyEventOutcome(outcome);
+            ResumeAfterEvent();
+        }
+
+        /// <summary>
+        /// Apply the resolved event outcome to the current run state.
+        /// Handles HP changes, item gains/losses, gold, and buffs.
+        /// </summary>
+        private void ApplyEventOutcome(EventOutcome outcome)
+        {
+            if (currentRun == null) return;
+
+            // Apply HP change (heal or damage)
+            if (outcome.hpChange != 0)
+            {
+                currentRun.playerHP = Mathf.Clamp(
+                    currentRun.playerHP + outcome.hpChange,
+                    0, currentRun.maxHP);
+
+                if (outcome.hpChange > 0 && AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySFX("heal");
+                else if (outcome.hpChange < 0 && AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySFX("trap");
+
+                Debug.Log($"[RunManager] Event HP change: {outcome.hpChange:+#;-#;0} → {currentRun.playerHP}/{currentRun.maxHP}");
+            }
+
+            // Apply gold change
+            if (outcome.goldChange != 0)
+            {
+                currentRun.gold = Mathf.Max(0, currentRun.gold + outcome.goldChange);
+                Debug.Log($"[RunManager] Event gold change: {outcome.goldChange:+#;-#;0} → {currentRun.gold}");
+            }
+
+            // Remove lost items
+            if (outcome.itemsLostIds != null && outcome.itemsLostIds.Count > 0)
+            {
+                foreach (string lostId in outcome.itemsLostIds)
+                {
+                    var item = currentRun.inventory.Find(i => i.id == lostId);
+                    if (item != null)
+                    {
+                        currentRun.inventory.Remove(item);
+                        Debug.Log($"[RunManager] Event removed item: {item.nameKey}");
+                    }
+                }
+            }
+
+            // Add gained items (if inventory has space)
+            if (outcome.itemsGained != null && outcome.itemsGained.Count > 0)
+            {
+                foreach (var gainedItem in outcome.itemsGained)
+                {
+                    if (currentRun.CanLootItem(gainedItem))
+                    {
+                        currentRun.inventory.Add(gainedItem);
+                        currentRun.itemsLooted++;
+                        Debug.Log($"[RunManager] Event granted item: {gainedItem.nameKey}");
+                    }
+                    else
+                    {
+                        Debug.Log($"[RunManager] Event item {gainedItem.nameKey} discarded (inventory full)");
+                    }
+                }
+            }
+
+            // Apply buff
+            if (outcome.buffGained.HasValue)
+            {
+                if (currentRun.activeBuffs == null)
+                    currentRun.activeBuffs = new List<BuffType>();
+                currentRun.activeBuffs.Add(outcome.buffGained.Value);
+                Debug.Log($"[RunManager] Event granted buff: {outcome.buffGained.Value}");
+            }
+
+            Debug.Log($"[RunManager] Event resolved: {outcome.messageKey} (success={outcome.success})");
         }
 
         /// <summary>

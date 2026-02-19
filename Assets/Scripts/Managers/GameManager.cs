@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using LootOrLose.Core.Items;
+using LootOrLose.Core.Scoring;
 using LootOrLose.Enums;
 using LootOrLose.State;
 using LootOrLose.Data;
@@ -45,6 +47,32 @@ namespace LootOrLose.Managers
             DontDestroyOnLoad(gameObject);
 
             InitializeEvents();
+        }
+
+        private void Start()
+        {
+            LoadProgressFromDisk();
+        }
+
+        private void LoadProgressFromDisk()
+        {
+            if (SaveManager.Instance != null)
+            {
+                playerProgress = SaveManager.Instance.LoadProgress();
+            }
+
+            if (playerProgress == null)
+            {
+                playerProgress = new PlayerProgressState
+                {
+                    playerId = System.Guid.NewGuid().ToString(),
+                    unlockedCharacterIds = new System.Collections.Generic.List<string> { "char_warrior" },
+                    unlockedBiomeIds = new System.Collections.Generic.List<string> { "biome_crypt" },
+                    unlockedAchievementIds = new System.Collections.Generic.List<string>(),
+                    itemLootCount = new System.Collections.Generic.Dictionary<string, int>()
+                };
+                Debug.Log("[GameManager] Created fresh player progress.");
+            }
         }
 
         private void InitializeEvents()
@@ -93,22 +121,78 @@ namespace LootOrLose.Managers
         {
             if (currentRun == null) return;
 
+            // Calculate final score using ScoreCalculator
+            var synergies = SynergyCalculator.CheckSynergies(currentRun.inventory);
+            int streak = playerProgress != null ? playerProgress.currentStreak : 0;
+
+            var scoreInput = new RunScoreInput
+            {
+                roundsCompleted = currentRun.currentRound,
+                bossesDefeated = currentRun.bossesDefeated,
+                finalInventory = currentRun.inventory,
+                synergies = synergies,
+                currentStreak = streak,
+                isDailyRun = false
+            };
+
+            ScoreBreakdown breakdown = ScoreCalculator.CalculateRunScore(scoreInput);
+            currentRun.score = breakdown.totalScore;
+
+            Debug.Log($"[GameManager] Score breakdown: Rounds={breakdown.roundScore} Boss={breakdown.bossScore} " +
+                      $"Synergy={breakdown.synergyScore} Rarity={breakdown.rarityScore} " +
+                      $"Streak={breakdown.streakMultiplier:F1}x → Total={breakdown.totalScore}");
+
             var result = new RunResult
             {
-                finalScore = currentRun.score,
+                finalScore = breakdown.totalScore,
                 roundsCompleted = currentRun.currentRound,
                 bossesDefeated = currentRun.bossesDefeated,
                 itemsLooted = currentRun.itemsLooted,
                 itemsLeft = currentRun.itemsLeft,
                 finalInventory = new System.Collections.Generic.List<ItemData>(currentRun.inventory),
+                character = currentRun.character,
                 biome = currentRun.currentBiome,
                 deathCause = deathCause,
                 runDuration = Time.time - currentRun.runStartTime,
                 timestamp = System.DateTime.UtcNow
             };
 
+            // Update persistent progress
+            UpdatePlayerProgress(result);
+
             ChangeState(GameState.RunSummary);
             OnRunEnded?.Invoke(result);
+        }
+
+        private void UpdatePlayerProgress(RunResult result)
+        {
+            if (playerProgress == null) return;
+
+            playerProgress.totalRuns++;
+            playerProgress.totalItemsLooted += result.itemsLooted;
+            playerProgress.totalBossesDefeated += result.bossesDefeated;
+
+            if (result.finalScore > playerProgress.bestScore)
+                playerProgress.bestScore = result.finalScore;
+            if (result.roundsCompleted > playerProgress.bestRound)
+                playerProgress.bestRound = result.roundsCompleted;
+
+            // Update streak
+            var today = System.DateTime.UtcNow.Date;
+            var lastPlay = playerProgress.lastPlayDate.Date;
+            if (lastPlay == today.AddDays(-1))
+            {
+                playerProgress.currentStreak++;
+            }
+            else if (lastPlay != today)
+            {
+                playerProgress.currentStreak = 1;
+            }
+            if (playerProgress.currentStreak > playerProgress.bestStreak)
+                playerProgress.bestStreak = playerProgress.currentStreak;
+            playerProgress.lastPlayDate = System.DateTime.UtcNow;
+
+            SaveProgress();
         }
 
         /// <summary>
@@ -140,12 +224,12 @@ namespace LootOrLose.Managers
         }
 
         /// <summary>
-        /// Save player progress.
+        /// Save player progress to disk via SaveManager.
         /// </summary>
         public void SaveProgress()
         {
-            // Will be implemented by SaveManager
-            Debug.Log("[GameManager] Save progress requested");
+            if (playerProgress == null || SaveManager.Instance == null) return;
+            SaveManager.Instance.SaveProgress(playerProgress);
         }
     }
 }
