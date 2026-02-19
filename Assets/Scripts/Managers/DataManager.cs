@@ -66,11 +66,20 @@ namespace LootOrLose.Managers
         // ─────────────────────────────────────────────
 
         [Header("Data Resource Paths")]
-        [SerializeField] private string itemsPath = "Data/items";
-        [SerializeField] private string bossesPath = "Data/bosses";
-        [SerializeField] private string eventsPath = "Data/events";
-        [SerializeField] private string charactersPath = "Data/characters";
-        [SerializeField] private string biomesPath = "Data/biomes";
+        [SerializeField] private string bossesPath = "Bosses/bosses";
+        [SerializeField] private string eventsPath = "Events/events";
+        [SerializeField] private string charactersPath = "Characters/characters";
+        [SerializeField] private string biomesPath = "Biomes/biomes";
+
+        private static readonly string[] ItemCategoryPaths = {
+            "Items/weapons",
+            "Items/defense",
+            "Items/consumables",
+            "Items/keys",
+            "Items/traps",
+            "Items/artifacts",
+            "Items/curses"
+        };
 
         // ─────────────────────────────────────────────
         //  Data Storage
@@ -143,26 +152,31 @@ namespace LootOrLose.Managers
         }
 
         /// <summary>
-        /// Load item definitions from Resources/<see cref="itemsPath"/>.json.
+        /// Load item definitions from multiple category files under Resources/Items/.
         /// </summary>
         private void LoadItems()
         {
-            TextAsset json = Resources.Load<TextAsset>(itemsPath);
-            if (json == null)
-            {
-                Debug.LogWarning($"[DataManager] Items data not found at Resources/{itemsPath}");
-                return;
-            }
+            allItems.Clear();
+            itemLookup.Clear();
 
-            var wrapper = JsonUtility.FromJson<ItemDataList>(json.text);
-            if (wrapper?.items != null)
+            foreach (string path in ItemCategoryPaths)
             {
-                allItems = wrapper.items;
-                itemLookup.Clear();
-                foreach (var item in allItems)
+                TextAsset json = Resources.Load<TextAsset>(path);
+                if (json == null)
                 {
-                    if (!string.IsNullOrEmpty(item.id))
-                        itemLookup[item.id] = item;
+                    Debug.LogWarning($"[DataManager] Items data not found at Resources/{path}");
+                    continue;
+                }
+
+                var wrapper = JsonUtility.FromJson<ItemDataList>(json.text);
+                if (wrapper?.items != null)
+                {
+                    foreach (var item in wrapper.items)
+                    {
+                        allItems.Add(item);
+                        if (!string.IsNullOrEmpty(item.id))
+                            itemLookup[item.id] = item;
+                    }
                 }
             }
         }
@@ -305,21 +319,21 @@ namespace LootOrLose.Managers
         }
 
         /// <summary>
-        /// Get a random event appropriate for the current dungeon zone.
-        /// Filters events by zone availability and minimum round requirements.
+        /// Get a random event appropriate for the current biome.
+        /// Filters events by biome availability and minimum round requirements.
         /// </summary>
-        /// <param name="zone">The current dungeon zone.</param>
+        /// <param name="biome">The current biome type.</param>
         /// <param name="random">Seeded random instance for deterministic selection.</param>
         /// <returns>A valid <see cref="EventData"/>, or null if none available.</returns>
-        public EventData GetRandomEvent(DungeonZone zone, System.Random random)
+        public EventData GetRandomEvent(BiomeType biome, System.Random random)
         {
             if (allEvents == null || allEvents.Count == 0) return null;
 
-            // Filter events available in this zone
+            // Filter events available in this biome
             var available = allEvents.Where(e =>
                 e.availableZones == null ||
                 e.availableZones.Length == 0 ||
-                e.availableZones.Contains(zone)
+                e.availableZones.Contains(biome)
             ).ToList();
 
             if (available.Count == 0) return null;

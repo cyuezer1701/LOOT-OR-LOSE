@@ -88,6 +88,8 @@ Assets/StreamingAssets/firebase-config.json
 # Build Artifacts
 # ===========================
 builds/
+LootORLooseiOS/
+*.slnx
 
 # ===========================
 # Dependencies

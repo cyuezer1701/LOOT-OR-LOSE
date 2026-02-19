@@ -22,7 +22,7 @@ namespace LootOrLose.Data
         public string descriptionKey;
 
         /// <summary>The type of event (e.g., Treasure, Trap, Merchant, Shrine).</summary>
-        public EventType type;
+        public LootOrLose.Enums.EventType type;
 
         /// <summary>
         /// Whether the player needs a specific item category in their inventory
@@ -50,10 +50,11 @@ namespace LootOrLose.Data
         public int minRound;
 
         /// <summary>
-        /// Dungeon zones where this event is allowed to occur.
-        /// An empty array means the event can appear in any zone.
+        /// Biomes where this event is allowed to occur.
+        /// An empty array means the event can appear in any biome.
+        /// JSON field name is "availableZones" but contains BiomeType values.
         /// </summary>
-        public DungeonZone[] availableZones;
+        public BiomeType[] availableZones;
 
         /// <summary>Resource path to the event's icon sprite.</summary>
         public string iconPath;

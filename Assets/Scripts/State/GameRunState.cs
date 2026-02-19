@@ -14,6 +14,33 @@ namespace LootOrLose.State
     /// </summary>
     public class GameRunState
     {
+        /// <summary>
+        /// Creates a new run state initialized from the selected character and biome.
+        /// </summary>
+        /// <param name="character">The character chosen for this run.</param>
+        /// <param name="biome">The biome (dungeon theme) for this run.</param>
+        /// <param name="dailySeed">Optional seed for daily challenge runs.</param>
+        public GameRunState(CharacterData character, BiomeData biome, int? dailySeed = null)
+        {
+            this.character = character;
+            currentRound = 0;
+            playerHP = character.baseHP;
+            maxHP = character.baseHP;
+            maxInventorySlots = character.inventorySlots;
+            inventory = new List<ItemData>();
+            gold = 0;
+            score = 0;
+            currentBiome = biome.type;
+            currentZone = DungeonZone.Tutorial;
+            activeBuffs = new List<BuffType>();
+            isAlive = true;
+            bossesDefeated = 0;
+            itemsLooted = 0;
+            itemsLeft = 0;
+            runStartTime = 0f;
+            seededRandom = dailySeed.HasValue ? new System.Random(dailySeed.Value) : new System.Random();
+        }
+
         // --- Round Tracking ---
 
         /// <summary>The current round number (1-based). Boss fights occur every 15 rounds.</summary>

@@ -503,7 +503,7 @@ namespace LootOrLose.Managers
 
             System.Random rng = currentRun.seededRandom ?? new System.Random();
             EventData eventData = DataManager.Instance != null
-                ? DataManager.Instance.GetRandomEvent(currentRun.currentZone, rng)
+                ? DataManager.Instance.GetRandomEvent(currentRun.currentBiome, rng)
                 : null;
 
             if (eventData == null)

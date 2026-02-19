@@ -1,7 +1,9 @@
 {
     "name": "LootOrLose.Scripts",
     "rootNamespace": "LootOrLose",
-    "references": [],
+    "references": [
+        "Unity.InputSystem"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

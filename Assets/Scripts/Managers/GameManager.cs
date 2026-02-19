@@ -79,6 +79,7 @@ namespace LootOrLose.Managers
         public void StartNewRun(CharacterData character, BiomeData biome, int? dailySeed = null)
         {
             currentRun = new GameRunState(character, biome, dailySeed);
+            currentRun.runStartTime = Time.time;
             ChangeState(GameState.InRun);
             OnRunStarted?.Invoke(currentRun);
             Debug.Log($"[GameManager] New run started: {character.nameKey} in {biome.nameKey}");
